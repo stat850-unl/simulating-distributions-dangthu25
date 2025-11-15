@@ -48,6 +48,7 @@ ggplot(df, aes(x)) +
 ```
 
 ----
+
 > The simulated density curve closely matches with the shape of the exponential(3) p.d.f.
 
 
@@ -64,6 +65,7 @@ p_true
 ```
 
 ----
+
 > I estimated `P(x > 1)` using 1000 simulated values by calculate the proportion of draws greater than 1. This gave an estimate of about 0.047. But using the true exponential distribution, the result is 0.04978707. The simulation estimate is very close to the true value.
 
 
@@ -167,6 +169,7 @@ ggplot(results, aes(x = alpha, y = beta, fill = beta_err)) +
 ```
 
 ----
+
 > The estimation error is largest when `alpha` and `beta` are small. When the parameters are large, the errors shrink significantly. This makes sense because small alpha produces highly skewed and noisy samples, which makes MLE estimation less stable, especially with only 100 observations. In both heatmaps, the error patterns show that: Error decreases as `alpha` increases. Error decreases as `beta` increases.
 
 
@@ -211,4 +214,5 @@ ggplot(results_n, aes(x = n, y = beta_err)) +
 ```
 
 ----
+
 > As the sample size increases, the estimation error decreases. When n = 20, both alpha and beta errors are relatively large and unstable. The errors become smaller at n = 30 and n = 50, and by the time n reaches 100, the estimates are very close to the true parameters.
