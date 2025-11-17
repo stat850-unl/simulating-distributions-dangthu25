@@ -15,13 +15,6 @@ Remember to set your seeds for these exercises so that you get the same answer e
 
 1. Simulate 1000 draws from the exponential distribution $$f(x) = \lambda e^{-\lambda x},\;\;\;\; x\geq0, \text{ with } \lambda=3$$
 
-
-2. Create a density plot of your values. Add the PDF of the exponential(3) distribution to your plot in a different color. How do they compare?
-
-3. How might you use your 1000 draws to estimate the probability that $x > 1$? Provide an estimate using only your 1000 draws, and compare this estimate to one derived from `pexp` (R) or `scipy.stats.expon.cdf` (Python).
-
-4. What is the average error from using a $n=1000$ simulation instead of a numerical calculation for the probability that $x>1$? Write a function to calculate the error from one simulation, and evaluate that function 100 times to calculate the expected error from using a simulation estimate rather than deterministic numerical integration.
-
 ```{r}
 # Question 1
 # set a default seed
@@ -32,6 +25,8 @@ x <- rexp(1000, rate = lambda)
 
 head(x)
 ```
+
+2. Create a density plot of your values. Add the PDF of the exponential(3) distribution to your plot in a different color. How do they compare?
 
 ```{r}
 # Question 2
@@ -52,6 +47,8 @@ ggplot(df, aes(x)) +
 > The simulated density curve closely matches with the shape of the exponential(3) p.d.f.
 
 
+3. How might you use your 1000 draws to estimate the probability that $x > 1$? Provide an estimate using only your 1000 draws, and compare this estimate to one derived from `pexp` (R) or `scipy.stats.expon.cdf` (Python).
+
 ```{r}
 # Question 3
 # estimate probability of simulation
@@ -66,8 +63,9 @@ p_true
 
 ----
 
-> I estimated `P(x > 1)` using 1000 simulated values by calculate the proportion of draws greater than 1. This gave an estimate of about 0.047. But using the true exponential distribution, the result is 0.04978707. The simulation estimate is very close to the true value.
+> I estimated `P(x>1)` using 1000 simulated values by calculate the proportion of draws greater than 1. This gave an estimate of about 0.047. But using the true exponential distribution, the result is 0.04978707. The simulation estimate is very close to the true value.
 
+4. What is the average error from using a $n=1000$ simulation instead of a numerical calculation for the probability that $x>1$? Write a function to calculate the error from one simulation, and evaluate that function 100 times to calculate the expected error from using a simulation estimate rather than deterministic numerical integration.
 
 ```{r}
 # Question 4
@@ -84,6 +82,11 @@ set.seed(402)
 errors <- replicate(100, error_simulation())
 mean(errors)
 ```
+----
+
+> This shows that using a simulation with n = 1000 gives a very accurate estimate of `P(X>1)`.
+
+
 
 ## Gamma Distribution
 
@@ -106,22 +109,20 @@ $$f(x | \alpha, \beta) = \frac{\beta^\alpha x^{\alpha-1} e^{-x}}{\Gamma(\alpha)}
 library(MASS)
 
 fit_gamma <- function(x, alpha = NULL, beta = NULL) {
-  fit <- fitdistr(x, densfun = "gamma")
+  fit <- fitdistr(x, "gamma")
   # extract estimates
   alpha_hat <- fit$estimate["shape"]
   beta_hat  <- fit$estimate["rate"]
   # create output list
   output <- list(alpha_hat = alpha_hat, beta_hat = beta_hat)
-  # if true alpha or beta provided -> errors
-  if (!is.null(alpha) && !is.null(beta)) {
-    output$alpha_err <- alpha - alpha_hat
-    output$beta_err  <- beta - beta_hat
-  }
+  # if providing true alpha or beta -> calculate errors
+  if (!is.null(alpha)) output$alpha_err <- alpha - alpha_hat 
+  if (!is.null(beta)) output$beta_err  <- beta - beta_hat  
   
   return(output)
 }
 
-set.seed(402)
+set.seed(403)
 x_sample <- rgamma(1000, shape = 2, rate = 3)
 fit_gamma(x_sample, alpha = 2, beta = 3)
 ```
@@ -134,17 +135,18 @@ fit_gamma(x_sample, alpha = 2, beta = 3)
 library(dplyr)
 library(ggplot2)
 
-alpha_grid <- c(0.25, 0.5, 1, 2, 4)
-beta_grid  <- c(0.25, 0.5, 1, 2, 4)
-grid <- expand.grid(alpha = alpha_grid, beta = beta_grid)
+# creating a 5x5 grid
+alpha_value <- c(0.25, 0.50, 1.00, 2.00, 4.00)
+beta_value  <- c(0.25, 0.50, 1.00, 2.00, 4.00)
+grid <- expand.grid(alpha = alpha_value, beta = beta_value)
 
-set.seed(402)
+set.seed(403)
 results <- data.frame()
 
 for (i in 1:nrow(grid)) {
   a <- grid$alpha[i]
   b <- grid$beta[i]
-  # sample 100 values
+  # draw 100 values
   x_sample <- rgamma(100, shape = a, rate = b)
   # estimate
   estimate <- fit_gamma(x_sample, alpha = a, beta = b)
@@ -154,7 +156,7 @@ for (i in 1:nrow(grid)) {
 # plot for alpha
 ggplot(results, aes(x = alpha, y = beta, fill = alpha_err)) +
   geom_tile() +
-  scale_fill_gradient2(mid = "white") +
+  scale_fill_gradient2(mid = "lightblue") +
   xlab("true alpha") + ylab("true beta") +
   ggtitle("Alpha estimation error") +
   labs(fill = "alpha_err")
@@ -170,7 +172,7 @@ ggplot(results, aes(x = alpha, y = beta, fill = beta_err)) +
 
 ----
 
-> The estimation error is largest when `alpha` and `beta` are small. When the parameters are large, the errors shrink significantly. This makes sense because small alpha produces highly skewed and noisy samples, which makes MLE estimation less stable, especially with only 100 observations. In both heatmaps, the error patterns show that: Error decreases as `alpha` increases. Error decreases as `beta` increases.
+> From the two plots, the estimation errors might not follow a very clear pattern. Because each cell is based on only one random sample of size 100. I can see that some larger alpha and beta give errors closer to 0, but there are also cases where the error isn't small.The results show that the errors might vary a lot for different parameter when the sample size is only 100.
 
 
 3. Now, let's vary the sample size. For $n=\{20, 30, 50, 100\}$, use your function to evaluate the error for $\alpha=1, \beta=2$. How does the error change as $n$ increases? Provide an appropriate plot as well as a description of the changes for increasing $n$. 
@@ -178,22 +180,18 @@ ggplot(results, aes(x = alpha, y = beta, fill = beta_err)) +
 
 ```{r}
 # Question 3
-
-alpha_true <- 1
-beta_true  <- 2
-
 n_values <- c(20, 30, 50, 100)
 
-set.seed(402)
+set.seed(403)
 
 results_n <- data.frame()
 
 for (n in n_values) {
-  x_sample <- rgamma(n, shape = alpha_true, rate = beta_true)
+  x_sample <- rgamma(n, shape = 1, rate = 2)
   
-  est <- fit_gamma(x_sample, alpha = alpha_true, beta = beta_true)
+  estimate_n <- fit_gamma(x_sample, alpha = 1, beta = 2)
   
-  results_n <- rbind(results_n,data.frame(n = n, alpha_err = est$alpha_err,beta_err  = est$beta_err))
+  results_n <- rbind(results_n,data.frame(n = n, alpha_err = estimate_n$alpha_err,                                                                              beta_err  =  estimate_n$beta_err))
 }
 
 results_n
@@ -215,4 +213,5 @@ ggplot(results_n, aes(x = n, y = beta_err)) +
 
 ----
 
-> As the sample size increases, the estimation error decreases. When n = 20, both alpha and beta errors are relatively large and unstable. The errors become smaller at n = 30 and n = 50, and by the time n reaches 100, the estimates are very close to the true parameters.
+> The errors change a lot when the sample size is small. For n=20 and n=30, alpha and beta errors might be quite large. When the sample size increases to 50 and 100, the errors become smaller and closer to zero.
+This shows that the MLE becomes more stable when having more data.

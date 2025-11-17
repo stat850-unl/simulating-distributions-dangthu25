@@ -141,10 +141,7 @@ window.Quarto = {
 <section id="exponential-distribution" class="level2">
 <h2 class="anchored" data-anchor-id="exponential-distribution">Exponential Distribution</h2>
 <ol type="1">
-<li><p>Simulate 1000 draws from the exponential distribution <span class="math display">\[f(x) = \lambda e^{-\lambda x},\;\;\;\; x\geq0, \text{ with } \lambda=3\]</span></p></li>
-<li><p>Create a density plot of your values. Add the PDF of the exponential(3) distribution to your plot in a different color. How do they compare?</p></li>
-<li><p>How might you use your 1000 draws to estimate the probability that <span class="math inline">\(x &gt; 1\)</span>? Provide an estimate using only your 1000 draws, and compare this estimate to one derived from <code>pexp</code> (R) or <code>scipy.stats.expon.cdf</code> (Python).</p></li>
-<li><p>What is the average error from using a <span class="math inline">\(n=1000\)</span> simulation instead of a numerical calculation for the probability that <span class="math inline">\(x&gt;1\)</span>? Write a function to calculate the error from one simulation, and evaluate that function 100 times to calculate the expected error from using a simulation estimate rather than deterministic numerical integration.</p></li>
+<li>Simulate 1000 draws from the exponential distribution <span class="math display">\[f(x) = \lambda e^{-\lambda x},\;\;\;\; x\geq0, \text{ with } \lambda=3\]</span></li>
 </ol>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Question 1</span></span>
@@ -159,6 +156,9 @@ window.Quarto = {
 <pre><code>[1] 0.08711106 0.40068591 0.14785457 0.09054197 0.28859679 0.27056209</code></pre>
 </div>
 </div>
+<ol start="2" type="1">
+<li>Create a density plot of your values. Add the PDF of the exponential(3) distribution to your plot in a different color. How do they compare?</li>
+</ol>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Question 2</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># loading package</span></span>
@@ -183,6 +183,9 @@ window.Quarto = {
 <blockquote class="blockquote">
 <p>The simulated density curve closely matches with the shape of the exponential(3) p.d.f.</p>
 </blockquote>
+<ol start="3" type="1">
+<li>How might you use your 1000 draws to estimate the probability that <span class="math inline">\(x &gt; 1\)</span>? Provide an estimate using only your 1000 draws, and compare this estimate to one derived from <code>pexp</code> (R) or <code>scipy.stats.expon.cdf</code> (Python).</li>
+</ol>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Question 3</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co"># estimate probability of simulation</span></span>
@@ -202,8 +205,11 @@ window.Quarto = {
 </div>
 <hr>
 <blockquote class="blockquote">
-<p>I estimated <code>P(x &gt; 1)</code> using 1000 simulated values by calculate the proportion of draws greater than 1. This gave an estimate of about 0.047. But using the true exponential distribution, the result is 0.04978707. The simulation estimate is very close to the true value.</p>
+<p>I estimated <code>P(x&gt;1)</code> using 1000 simulated values by calculate the proportion of draws greater than 1. This gave an estimate of about 0.047. But using the true exponential distribution, the result is 0.04978707. The simulation estimate is very close to the true value.</p>
 </blockquote>
+<ol start="4" type="1">
+<li>What is the average error from using a <span class="math inline">\(n=1000\)</span> simulation instead of a numerical calculation for the probability that <span class="math inline">\(x&gt;1\)</span>? Write a function to calculate the error from one simulation, and evaluate that function 100 times to calculate the expected error from using a simulation estimate rather than deterministic numerical integration.</li>
+</ol>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Question 4</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co"># creating a function</span></span>
@@ -222,6 +228,10 @@ window.Quarto = {
 <pre><code>[1] 0.005234259</code></pre>
 </div>
 </div>
+<hr>
+<blockquote class="blockquote">
+<p>This shows that using a simulation with n = 1000 gives a very accurate estimate of <code>P(X&gt;1)</code>.</p>
+</blockquote>
 </section>
 <section id="gamma-distribution" class="level2">
 <h2 class="anchored" data-anchor-id="gamma-distribution">Gamma Distribution</h2>
@@ -241,40 +251,38 @@ window.Quarto = {
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(MASS)</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>fit_gamma <span class="ot">&lt;-</span> <span class="cf">function</span>(x, <span class="at">alpha =</span> <span class="cn">NULL</span>, <span class="at">beta =</span> <span class="cn">NULL</span>) {</span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  fit <span class="ot">&lt;-</span> <span class="fu">fitdistr</span>(x, <span class="at">densfun =</span> <span class="st">"gamma"</span>)</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  fit <span class="ot">&lt;-</span> <span class="fu">fitdistr</span>(x, <span class="st">"gamma"</span>)</span>
 <span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  <span class="co"># extract estimates</span></span>
 <span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  alpha_hat <span class="ot">&lt;-</span> fit<span class="sc">$</span>estimate[<span class="st">"shape"</span>]</span>
 <span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>  beta_hat  <span class="ot">&lt;-</span> fit<span class="sc">$</span>estimate[<span class="st">"rate"</span>]</span>
 <span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>  <span class="co"># create output list</span></span>
 <span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>  output <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">alpha_hat =</span> alpha_hat, <span class="at">beta_hat =</span> beta_hat)</span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>  <span class="co"># if true alpha or beta provided -&gt; errors</span></span>
-<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.null</span>(alpha) <span class="sc">&amp;&amp;</span> <span class="sc">!</span><span class="fu">is.null</span>(beta)) {</span>
-<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>    output<span class="sc">$</span>alpha_err <span class="ot">&lt;-</span> alpha <span class="sc">-</span> alpha_hat</span>
-<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>    output<span class="sc">$</span>beta_err  <span class="ot">&lt;-</span> beta <span class="sc">-</span> beta_hat</span>
-<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(output)</span>
-<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">402</span>)</span>
-<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>x_sample <span class="ot">&lt;-</span> <span class="fu">rgamma</span>(<span class="dv">1000</span>, <span class="at">shape =</span> <span class="dv">2</span>, <span class="at">rate =</span> <span class="dv">3</span>)</span>
-<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a><span class="fu">fit_gamma</span>(x_sample, <span class="at">alpha =</span> <span class="dv">2</span>, <span class="at">beta =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>  <span class="co"># if providing true alpha or beta -&gt; calculate errors</span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.null</span>(alpha)) output<span class="sc">$</span>alpha_err <span class="ot">&lt;-</span> alpha <span class="sc">-</span> alpha_hat </span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.null</span>(beta)) output<span class="sc">$</span>beta_err  <span class="ot">&lt;-</span> beta <span class="sc">-</span> beta_hat  </span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(output)</span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">403</span>)</span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>x_sample <span class="ot">&lt;-</span> <span class="fu">rgamma</span>(<span class="dv">1000</span>, <span class="at">shape =</span> <span class="dv">2</span>, <span class="at">rate =</span> <span class="dv">3</span>)</span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a><span class="fu">fit_gamma</span>(x_sample, <span class="at">alpha =</span> <span class="dv">2</span>, <span class="at">beta =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>$alpha_hat
    shape 
-2.105205 
+1.981312 
 
 $beta_hat
     rate 
-3.221754 
+2.896118 
 
 $alpha_err
      shape 
--0.1052048 
+0.01868753 
 
 $beta_err
-      rate 
--0.2217542 </code></pre>
+     rate 
+0.1038823 </code></pre>
 </div>
 </div>
 <ol start="2" type="1">
@@ -305,32 +313,26 @@ Attaching package: 'dplyr'</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>alpha_grid <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">0.25</span>, <span class="fl">0.5</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">4</span>)</span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>beta_grid  <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">0.25</span>, <span class="fl">0.5</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">4</span>)</span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>grid <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(<span class="at">alpha =</span> alpha_grid, <span class="at">beta =</span> beta_grid)</span>
-<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">402</span>)</span>
-<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>results <span class="ot">&lt;-</span> <span class="fu">data.frame</span>()</span>
-<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(grid)) {</span>
-<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>  a <span class="ot">&lt;-</span> grid<span class="sc">$</span>alpha[i]</span>
-<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>  b <span class="ot">&lt;-</span> grid<span class="sc">$</span>beta[i]</span>
-<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>  <span class="co"># sample 100 values</span></span>
-<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>  x_sample <span class="ot">&lt;-</span> <span class="fu">rgamma</span>(<span class="dv">100</span>, <span class="at">shape =</span> a, <span class="at">rate =</span> b)</span>
-<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>  <span class="co"># estimate</span></span>
-<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>  estimate <span class="ot">&lt;-</span> <span class="fu">fit_gamma</span>(x_sample, <span class="at">alpha =</span> a, <span class="at">beta =</span> b)</span>
-<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a> </span>
-<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a>  results <span class="ot">&lt;-</span> <span class="fu">rbind</span>(results, <span class="fu">data.frame</span>(<span class="at">alpha =</span> a, <span class="at">beta =</span> b,                                                                        <span class="at">alpha_err =</span> estimate<span class="sc">$</span>alpha_err, <span class="at">beta_err =</span> estimate<span class="sc">$</span>beta_err))</span>
-<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="co"># creating a 5x5 grid</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>alpha_value <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">0.25</span>, <span class="fl">0.50</span>, <span class="fl">1.00</span>, <span class="fl">2.00</span>, <span class="fl">4.00</span>)</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>beta_value  <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">0.25</span>, <span class="fl">0.50</span>, <span class="fl">1.00</span>, <span class="fl">2.00</span>, <span class="fl">4.00</span>)</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>grid <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(<span class="at">alpha =</span> alpha_value, <span class="at">beta =</span> beta_value)</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">403</span>)</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>results <span class="ot">&lt;-</span> <span class="fu">data.frame</span>()</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(grid)) {</span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>  a <span class="ot">&lt;-</span> grid<span class="sc">$</span>alpha[i]</span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>  b <span class="ot">&lt;-</span> grid<span class="sc">$</span>beta[i]</span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>  <span class="co"># draw 100 values</span></span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>  x_sample <span class="ot">&lt;-</span> <span class="fu">rgamma</span>(<span class="dv">100</span>, <span class="at">shape =</span> a, <span class="at">rate =</span> b)</span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>  <span class="co"># estimate</span></span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a>  estimate <span class="ot">&lt;-</span> <span class="fu">fit_gamma</span>(x_sample, <span class="at">alpha =</span> a, <span class="at">beta =</span> b)</span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a>  results <span class="ot">&lt;-</span> <span class="fu">rbind</span>(results, <span class="fu">data.frame</span>(<span class="at">alpha =</span> a, <span class="at">beta =</span> b,                                                                        <span class="at">alpha_err =</span> estimate<span class="sc">$</span>alpha_err, <span class="at">beta_err =</span> estimate<span class="sc">$</span>beta_err))</span>
+<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning in densfun(x, parm[1], parm[2], ...): NaNs produced
-Warning in densfun(x, parm[1], parm[2], ...): NaNs produced
-Warning in densfun(x, parm[1], parm[2], ...): NaNs produced
-Warning in densfun(x, parm[1], parm[2], ...): NaNs produced
-Warning in densfun(x, parm[1], parm[2], ...): NaNs produced
-Warning in densfun(x, parm[1], parm[2], ...): NaNs produced
-Warning in densfun(x, parm[1], parm[2], ...): NaNs produced
-Warning in densfun(x, parm[1], parm[2], ...): NaNs produced
 Warning in densfun(x, parm[1], parm[2], ...): NaNs produced
 Warning in densfun(x, parm[1], parm[2], ...): NaNs produced
 Warning in densfun(x, parm[1], parm[2], ...): NaNs produced
@@ -367,7 +369,7 @@ Warning in densfun(x, parm[1], parm[2], ...): NaNs produced</code></pre>
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># plot for alpha</span></span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(results, <span class="fu">aes</span>(<span class="at">x =</span> alpha, <span class="at">y =</span> beta, <span class="at">fill =</span> alpha_err)) <span class="sc">+</span></span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>() <span class="sc">+</span></span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_gradient2</span>(<span class="at">mid =</span> <span class="st">"white"</span>) <span class="sc">+</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_gradient2</span>(<span class="at">mid =</span> <span class="st">"lightblue"</span>) <span class="sc">+</span></span>
 <span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"true alpha"</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">"true beta"</span>) <span class="sc">+</span></span>
 <span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Alpha estimation error"</span>) <span class="sc">+</span></span>
 <span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">fill =</span> <span class="st">"alpha_err"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -395,49 +397,37 @@ Warning in densfun(x, parm[1], parm[2], ...): NaNs produced</code></pre>
 </div>
 <hr>
 <blockquote class="blockquote">
-<p>The estimation error is largest when <code>alpha</code> and <code>beta</code> are small. When the parameters are large, the errors shrink significantly. This makes sense because small alpha produces highly skewed and noisy samples, which makes MLE estimation less stable, especially with only 100 observations. In both heatmaps, the error patterns show that: Error decreases as <code>alpha</code> increases. Error decreases as <code>beta</code> increases.</p>
+<p>From the two plots, the estimation errors might not follow a very clear pattern. Because each cell is based on only one random sample of size 100. I can see that some larger alpha and beta give errors closer to 0, but there are also cases where the error isn’t small.The results show that the errors might vary a lot for different parameter when the sample size is only 100.</p>
 </blockquote>
 <ol start="3" type="1">
 <li>Now, let’s vary the sample size. For <span class="math inline">\(n=\{20, 30, 50, 100\}\)</span>, use your function to evaluate the error for <span class="math inline">\(\alpha=1, \beta=2\)</span>. How does the error change as <span class="math inline">\(n\)</span> increases? Provide an appropriate plot as well as a description of the changes for increasing <span class="math inline">\(n\)</span>.</li>
 </ol>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Question 3</span></span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>alpha_true <span class="ot">&lt;-</span> <span class="dv">1</span></span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>beta_true  <span class="ot">&lt;-</span> <span class="dv">2</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>n_values <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">20</span>, <span class="dv">30</span>, <span class="dv">50</span>, <span class="dv">100</span>)</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">403</span>)</span>
 <span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>n_values <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">20</span>, <span class="dv">30</span>, <span class="dv">50</span>, <span class="dv">100</span>)</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>results_n <span class="ot">&lt;-</span> <span class="fu">data.frame</span>()</span>
 <span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">402</span>)</span>
-<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>results_n <span class="ot">&lt;-</span> <span class="fu">data.frame</span>()</span>
-<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (n <span class="cf">in</span> n_values) {</span>
-<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>  x_sample <span class="ot">&lt;-</span> <span class="fu">rgamma</span>(n, <span class="at">shape =</span> alpha_true, <span class="at">rate =</span> beta_true)</span>
-<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a>  est <span class="ot">&lt;-</span> <span class="fu">fit_gamma</span>(x_sample, <span class="at">alpha =</span> alpha_true, <span class="at">beta =</span> beta_true)</span>
-<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a>  results_n <span class="ot">&lt;-</span> <span class="fu">rbind</span>(results_n,<span class="fu">data.frame</span>(<span class="at">n =</span> n, <span class="at">alpha_err =</span> est<span class="sc">$</span>alpha_err,<span class="at">beta_err  =</span> est<span class="sc">$</span>beta_err))</span>
-<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (n <span class="cf">in</span> n_values) {</span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>  x_sample <span class="ot">&lt;-</span> <span class="fu">rgamma</span>(n, <span class="at">shape =</span> <span class="dv">1</span>, <span class="at">rate =</span> <span class="dv">2</span>)</span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>  estimate_n <span class="ot">&lt;-</span> <span class="fu">fit_gamma</span>(x_sample, <span class="at">alpha =</span> <span class="dv">1</span>, <span class="at">beta =</span> <span class="dv">2</span>)</span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>  results_n <span class="ot">&lt;-</span> <span class="fu">rbind</span>(results_n,<span class="fu">data.frame</span>(<span class="at">n =</span> n, <span class="at">alpha_err =</span> estimate_n<span class="sc">$</span>alpha_err,                                                                              <span class="at">beta_err  =</span>  estimate_n<span class="sc">$</span>beta_err))</span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning in densfun(x, parm[1], parm[2], ...): NaNs produced
-Warning in densfun(x, parm[1], parm[2], ...): NaNs produced
-Warning in densfun(x, parm[1], parm[2], ...): NaNs produced
-Warning in densfun(x, parm[1], parm[2], ...): NaNs produced
-Warning in densfun(x, parm[1], parm[2], ...): NaNs produced
-Warning in densfun(x, parm[1], parm[2], ...): NaNs produced
-Warning in densfun(x, parm[1], parm[2], ...): NaNs produced
-Warning in densfun(x, parm[1], parm[2], ...): NaNs produced
-Warning in densfun(x, parm[1], parm[2], ...): NaNs produced
 Warning in densfun(x, parm[1], parm[2], ...): NaNs produced</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>results_n</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>         n   alpha_err   beta_err
-shape   20  0.12995022  0.5791511
-shape1  30 -0.27628632 -0.5844670
-shape2  50  0.08029928  0.2576204
-shape3 100 -0.16710216 -0.4442625</code></pre>
+shape   20  0.03304180 -2.4261025
+shape1  30 -0.32930119 -0.9733458
+shape2  50  0.00191877 -0.1128117
+shape3 100 -0.20475933 -0.3305773</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># plot for alpha</span></span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(results_n, <span class="fu">aes</span>(<span class="at">x =</span> n, <span class="at">y =</span> alpha_err)) <span class="sc">+</span></span>
@@ -468,7 +458,7 @@ shape3 100 -0.16710216 -0.4442625</code></pre>
 </div>
 <hr>
 <blockquote class="blockquote">
-<p>As the sample size increases, the estimation error decreases. When n = 20, both alpha and beta errors are relatively large and unstable. The errors become smaller at n = 30 and n = 50, and by the time n reaches 100, the estimates are very close to the true parameters.</p>
+<p>The errors change a lot when the sample size is small. For n=20 and n=30, alpha and beta errors might be quite large. When the sample size increases to 50 and 100, the errors become smaller and closer to zero. This shows that the MLE becomes more stable when having more data.</p>
 </blockquote>
 </section>
 </section>
